@@ -14,6 +14,9 @@ export interface SiteConfig {
   navigation: {
     primaryCtaLabel: string;
     primaryCtaUrl: string;
+    secondaryCtaLabel: string;
+    secondaryCtaUrl: string;
+    freeTrainingUrl: string;
     talkToTeamUrl: string;
   };
   metrics: {
@@ -35,6 +38,7 @@ export interface SiteConfig {
   whatsapp: {
     number: string;
     defaultMessage: string;
+    label: string;
   };
   disclaimer: {
     badge: string;
@@ -55,11 +59,14 @@ export const siteConfig: SiteConfig = {
     website: 'https://www.neurorecode.in',
     supportEmail: 'support@neurorecode.in',
     careersEmail: 'careers@neurorecode.in',
-    tagline: 'Heal Your Mind To Heal Your Life',
+    tagline: 'Change the pattern. Change how you experience life.',
   },
   navigation: {
-    primaryCtaLabel: 'Start with the Free Training',
-    primaryCtaUrl:
+    primaryCtaLabel: 'Book a Consultation',
+    primaryCtaUrl: '/contact?type=consultation',
+    secondaryCtaLabel: 'How Neuro Recode Works',
+    secondaryCtaUrl: '#how-it-works',
+    freeTrainingUrl:
       process.env.NEXT_PUBLIC_FREE_TRAINING_URL || 'https://learn.neurorecode.in/welcome-page',
     talkToTeamUrl: '/contact',
   },
@@ -83,7 +90,8 @@ export const siteConfig: SiteConfig = {
   whatsapp: {
     number: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '919876543210',
     defaultMessage:
-      'Hi Neuro Recode, I came through the website and would like to know more about the program.',
+      'Hi Neuro Recode, I would like to explore booking a consultation.',
+    label: 'Chat with Neuro Recode',
   },
   disclaimer: {
     badge: 'Non-Clinical Wellness Protocol',

@@ -2,6 +2,7 @@
 
 type EventName =
   | 'page_view'
+  | 'consultation_cta_click'
   | 'free_training_click'
   | 'contact_started'
   | 'contact_submitted'

@@ -8,16 +8,15 @@ import { Logo } from './logo';
 import { MobileDrawer } from './mobile-drawer';
 import { siteConfig } from '@/lib/cms/site-config';
 import { trackEvent } from '@/lib/analytics/events';
-import { appendAttributionToUrl, initializeAttribution } from '@/lib/analytics/attribution';
+import { initializeAttribution } from '@/lib/analytics/attribution';
 
 const NAV_LINKS = [
-  { href: '/method', label: 'The Method' },
-  { href: '/who-we-serve', label: 'Who We Serve' },
+  { href: '/#how-it-works', label: 'How It Works' },
+  { href: '/#what-is-neurorecode', label: 'Neuro Recode' },
+  { href: '/#areas-we-help', label: 'Areas We Help' },
   { href: '/about', label: 'About' },
-  { href: '/stories', label: 'Stories' },
-  { href: '/science', label: 'Science' },
-  { href: '/resources', label: 'Resources' },
-  { href: '/careers', label: 'Careers' },
+  { href: '/#stories', label: 'Stories' },
+  { href: '/#faq', label: 'FAQ' },
 ];
 
 export function Header() {
@@ -36,11 +35,9 @@ export function Header() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const handleCtaClick = () => {
-    trackEvent('free_training_click', { location: 'desktop_header' });
+  const handleConsultationClick = () => {
+    trackEvent('consultation_cta_click', { location: 'header' });
   };
-
-  const freeTrainingUrl = appendAttributionToUrl(siteConfig.navigation.primaryCtaUrl);
 
   return (
     <>
@@ -81,38 +78,27 @@ export function Header() {
             })}
           </nav>
 
-          {/* Right Action CTAs */}
+          {/* Right Action CTA */}
           <div className="hidden sm:flex items-center gap-3">
             <Link
-              href="/contact"
-              className="hidden md:inline-flex px-3.5 py-2 text-xs font-semibold text-content-secondary hover:text-primary transition-colors"
-            >
-              Talk to Team
-            </Link>
-
-            <a
-              href={freeTrainingUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={handleCtaClick}
-              className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-primary text-accent text-xs lg:text-sm font-semibold hover:bg-primary-hover shadow-subtle hover:shadow-card transition-all active:scale-[0.98]"
+              href={siteConfig.navigation.primaryCtaUrl}
+              onClick={handleConsultationClick}
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary text-white text-xs lg:text-sm font-semibold hover:bg-primary-hover shadow-subtle hover:shadow-card transition-all active:scale-[0.98]"
             >
               <span>{siteConfig.navigation.primaryCtaLabel}</span>
-              <ArrowRight className="w-4 h-4" />
-            </a>
+              <ArrowRight className="w-4 h-4 text-accent" />
+            </Link>
           </div>
 
-          {/* Mobile Hamburger Button */}
+          {/* Mobile Actions & Hamburger */}
           <div className="flex items-center gap-2 lg:hidden">
-            <a
-              href={freeTrainingUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={handleCtaClick}
-              className="sm:hidden inline-flex items-center px-3 py-1.5 rounded-lg bg-primary text-accent text-xs font-semibold"
+            <Link
+              href={siteConfig.navigation.primaryCtaUrl}
+              onClick={handleConsultationClick}
+              className="sm:hidden inline-flex items-center px-3 py-1.5 rounded-lg bg-primary text-white text-xs font-semibold shadow-xs"
             >
-              Free Training
-            </a>
+              <span>Book</span>
+            </Link>
             <button
               type="button"
               onClick={() => setMobileMenuOpen(true)}

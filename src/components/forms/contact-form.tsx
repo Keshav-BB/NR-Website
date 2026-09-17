@@ -24,7 +24,7 @@ export function ContactForm() {
     resolver: zodResolver(LeadSubmissionSchema),
     defaultValues: {
       preferredLanguage: 'Tanglish (Tamil + English)',
-      enquiryType: 'Program Enquiry',
+      enquiryType: 'Consultation (RCA Booking)',
       consent: true,
       honeypot: '',
     },

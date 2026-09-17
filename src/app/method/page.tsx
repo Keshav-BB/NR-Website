@@ -17,7 +17,9 @@ export const metadata: Metadata = {
 };
 
 export default function MethodPage() {
-  const methodFaqs = faqsData.filter((f) => f.category === 'Method' || f.category === 'Logistics');
+  const methodFaqs = faqsData.filter(
+    (f) => f.category === 'Understanding Neuro Recode' || f.category === 'Sessions & Process'
+  );
 
   return (
     <div className="bg-background">

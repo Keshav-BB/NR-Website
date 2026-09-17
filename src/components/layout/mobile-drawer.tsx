@@ -6,7 +6,6 @@ import { usePathname } from 'next/navigation';
 import { X, ArrowRight, PhoneCall, Mail } from 'lucide-react';
 import { siteConfig } from '@/lib/cms/site-config';
 import { trackEvent } from '@/lib/analytics/events';
-import { appendAttributionToUrl } from '@/lib/analytics/attribution';
 import { Logo } from './logo';
 
 interface MobileDrawerProps {
@@ -48,11 +47,10 @@ export function MobileDrawer({ isOpen, onClose, navLinks }: MobileDrawerProps) {
 
   if (!isOpen) return null;
 
-  const handleCtaClick = () => {
-    trackEvent('free_training_click', { location: 'mobile_drawer' });
+  const handleConsultationClick = () => {
+    trackEvent('consultation_cta_click', { location: 'mobile_drawer' });
+    onClose();
   };
-
-  const freeTrainingHref = appendAttributionToUrl(siteConfig.navigation.primaryCtaUrl);
 
   return (
     <div
@@ -82,6 +80,7 @@ export function MobileDrawer({ isOpen, onClose, navLinks }: MobileDrawerProps) {
             <Link
               key={link.href}
               href={link.href}
+              onClick={onClose}
               className={`flex items-center justify-between py-3.5 px-3 rounded-xl text-lg font-medium transition-all ${
                 isActive
                   ? 'bg-white/10 text-accent font-semibold pl-4'
@@ -97,6 +96,7 @@ export function MobileDrawer({ isOpen, onClose, navLinks }: MobileDrawerProps) {
         <div className="pt-6 border-t border-white/10 my-4">
           <Link
             href="/contact"
+            onClick={onClose}
             className="flex items-center gap-3 py-3 px-3 rounded-xl text-white/80 hover:text-white text-base font-medium"
           >
             <PhoneCall className="w-4 h-4 text-accent" />
@@ -112,20 +112,18 @@ export function MobileDrawer({ isOpen, onClose, navLinks }: MobileDrawerProps) {
         </div>
       </div>
 
-      {/* Drawer Action Footer */}
+      {/* Persistent Drawer Action Footer */}
       <div className="p-6 border-t border-white/10 bg-[#1A0B26] flex flex-col gap-3">
-        <a
-          href={freeTrainingHref}
-          target="_blank"
-          rel="noopener noreferrer"
-          onClick={handleCtaClick}
+        <Link
+          href={siteConfig.navigation.primaryCtaUrl}
+          onClick={handleConsultationClick}
           className="w-full flex items-center justify-center gap-2 py-4 px-6 rounded-xl bg-accent text-[#241033] font-bold text-base hover:bg-accent-hover shadow-elevated transition-all"
         >
           <span>{siteConfig.navigation.primaryCtaLabel}</span>
           <ArrowRight className="w-4 h-4" />
-        </a>
+        </Link>
         <p className="text-center text-xs text-white/50">
-          60-min masterclass · Non-clinical protocol · Tanglish delivery
+          Confidential 1-on-1 · Non-clinical experiential approach
         </p>
       </div>
     </div>
