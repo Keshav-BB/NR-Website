@@ -1,0 +1,121 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Colors calibrated directly from the official Neuro Recode Logo */
+  --background: #FAF8F5;
+  --surface: #FFFFFF;
+  --surface-muted: #F3EDF9;
+  --primary: #6B32A1;
+  --primary-hover: #562386;
+  --primary-dark: #241033;
+  --primary-light: #824CB8;
+  --accent: #C99940;
+  --accent-hover: #B8872E;
+  --accent-muted: #9E7423;
+  --accent-light: #F7E5BC;
+  --logo-violet: #7849AD;
+  --logo-gold: #C99940;
+  --logo-silver: #B4B4B4;
+  --text-primary: #241033;
+  --text-secondary: #584B66;
+  --text-muted: #887B96;
+  --border: rgba(107, 50, 161, 0.12);
+  --border-focus: #6B32A1;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--text-primary);
+  font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1;
+}
+
+/* Accessibility Focus States */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Brand Gradients derived from logo */
+.bg-gradient-neuro {
+  background: linear-gradient(135deg, #7849AD 0%, #A469D1 45%, #C99940 100%);
+}
+
+.bg-gradient-neuro-subtle {
+  background: linear-gradient(135deg, rgba(120, 73, 173, 0.08) 0%, rgba(201, 153, 64, 0.08) 100%);
+}
+
+.text-gradient-neuro {
+  background: linear-gradient(135deg, #6B32A1 0%, #C99940 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-balance {
+  text-wrap: balance;
+}
+
+.text-pretty {
+  text-wrap: pretty;
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border);
+}
+
+.skip-to-content {
+  position: absolute;
+  top: -100px;
+  left: 20px;
+  background: var(--primary);
+  color: var(--accent-light);
+  padding: 12px 20px;
+  z-index: 9999;
+  font-weight: 600;
+  border-radius: 0 0 8px 8px;
+  transition: top 0.2s ease-in-out;
+}
+
+.skip-to-content:focus {
+  top: 0;
+}
