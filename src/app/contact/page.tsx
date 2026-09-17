@@ -5,9 +5,9 @@ import { siteConfig } from '@/lib/cms/site-config';
 import { Mail, MessageCircle, Phone, MapPin, ShieldAlert, Clock } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'Contact Neuro Recode: Consultations, Program Enquiries & Support',
+  title: 'Book a Consultation — Neuro Recode',
   description:
-    'Connect with the Neuro Recode team for Root Cause Analysis (RCA) consultation bookings, program admissions, or general support.',
+    'Schedule a confidential 1-on-1 Root Cause Analysis (RCA) consultation with our practitioner team to map your subconscious emotional and behavioural patterns.',
   alternates: {
     canonical: '/contact',
   },
@@ -19,19 +19,18 @@ export default function ContactPage() {
   )}`;
 
   return (
-    <div className="bg-background">
+    <div className="bg-background min-h-screen">
       {/* Hero */}
-      <section className="pt-16 pb-16 sm:pt-24 sm:pb-20 bg-background border-b border-border">
+      <section className="pt-16 pb-16 sm:pt-24 sm:pb-20 bg-gradient-to-b from-background via-purple-tint/15 to-background border-b border-border/80">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-semibold uppercase tracking-wider mb-6">
-            Get in Touch
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-semibold uppercase tracking-wider mb-6">
+            1-on-1 Pattern Mapping
           </div>
           <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold text-primary-dark tracking-tight leading-tight mb-6">
-            We are here to help you get clarity.
+            Take the first step toward understanding your patterns.
           </h1>
-          <p className="text-lg sm:text-xl text-content-secondary leading-relaxed max-w-2xl mx-auto">
-            Whether you want to enquire about the 3-step protocol, book an RCA consultation, or ask
-            a question about your situation, our team is ready.
+          <p className="text-lg sm:text-xl text-content-secondary leading-relaxed max-w-2xl mx-auto font-normal">
+            Schedule a private, 1-on-1 Root Cause Analysis (RCA) consultation to deconstruct your emotional and behavioral patterns with an experienced practitioner.
           </p>
         </div>
       </section>

@@ -9,6 +9,7 @@ export interface SiteConfig {
     website: string;
     supportEmail: string;
     careersEmail: string;
+    phone: string;
     tagline: string;
   };
   navigation: {
@@ -59,6 +60,7 @@ export const siteConfig: SiteConfig = {
     website: 'https://www.neurorecode.in',
     supportEmail: 'support@neurorecode.in',
     careersEmail: 'careers@neurorecode.in',
+    phone: '+91 88073 04713',
     tagline: 'Change the pattern. Change how you experience life.',
   },
   navigation: {

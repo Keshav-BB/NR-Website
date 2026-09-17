@@ -29,6 +29,9 @@ export const LeadSubmissionSchema = z.object({
     }
   ),
   message: z.string().max(1000, 'Message cannot exceed 1000 characters').optional(),
+  preferredSlot: z.string().max(100).optional(),
+  patternArea: z.string().max(100).optional(),
+  sessionMode: z.string().max(50).optional(),
   consent: z.literal(true, {
     errorMap: () => ({
       message: 'You must acknowledge the non-clinical wellness disclaimer to proceed',
@@ -58,20 +61,36 @@ export const JobApplicationSchema = z.object({
     .min(10, 'Please enter a valid 10-digit mobile number')
     .max(15)
     .regex(/^[0-9+\s()-]+$/, 'Mobile number contains invalid characters'),
-  city: z.string().min(2, 'Please specify your location').max(60),
+  city: z.string().min(2, 'Please specify your current location').max(60),
   currentRole: z.string().min(2, 'Current role or latest experience is required'),
   experienceYears: z.string().min(1, 'Please select your experience range'),
+  preferredWorkMode: z.string().optional(),
+  noticePeriod: z.string().optional(),
+  expectedSalary: z.string().optional(),
   linkedinUrl: z
     .string()
     .url('Please provide a valid LinkedIn URL')
     .or(z.literal(''))
     .optional(),
+  portfolioUrl: z
+    .string()
+    .url('Please provide a valid portfolio or work samples link')
+    .or(z.literal(''))
+    .optional(),
   resumeLink: z
     .string()
-    .url('Please provide a valid URL to your resume (Google Drive, Dropbox, or Portfolio)')
+    .url('Please provide a valid URL to your resume (Google Drive, Dropbox, or OneDrive)')
     .or(z.literal(''))
     .optional(),
   coverNote: z.string().max(1500, 'Cover note cannot exceed 1500 characters').optional(),
+  whyJoin: z.string().max(1000, 'Response cannot exceed 1000 characters').optional(),
+  // Role specific fields
+  hasLaptop: z.enum(['yes', 'no']).optional(),
+  hasStableInternet: z.enum(['yes', 'no']).optional(),
+  isFluentTamil: z.enum(['yes', 'no']).optional(),
+  preferredInterviewSlot: z.string().max(100).optional(),
+  hasMetaAdsExperience: z.enum(['yes', 'no']).optional(),
+  certifications: z.string().max(300).optional(),
   consent: z.literal(true, {
     errorMap: () => ({
       message: 'You must consent to data processing for recruitment purposes',

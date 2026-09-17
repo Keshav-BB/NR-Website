@@ -93,8 +93,7 @@ export async function submitJobApplicationToFrappe(
     job_title: jobApp.jobTitle,
     custom_job_id: jobApp.jobId,
     location: jobApp.city,
-    total_experience: jobApp.experienceYears,
-    notes_and_cover_letter: `${jobApp.currentRole} | ${jobApp.coverNote || ''} | LinkedIn: ${jobApp.linkedinUrl || 'N/A'} | Resume: ${jobApp.resumeLink || 'N/A'}`,
+    notes_and_cover_letter: `${jobApp.currentRole} | ${jobApp.coverNote || ''} | Notice: ${jobApp.noticePeriod || 'N/A'} | Expected CTC: ${jobApp.expectedSalary || 'N/A'} | Laptop: ${jobApp.hasLaptop || 'N/A'} | Tamil: ${jobApp.isFluentTamil || 'N/A'} | Meta Ads: ${jobApp.hasMetaAdsExperience || 'N/A'} | Certs: ${jobApp.certifications || 'N/A'} | Portfolio: ${jobApp.portfolioUrl || 'N/A'} | LinkedIn: ${jobApp.linkedinUrl || 'N/A'} | Resume: ${jobApp.resumeLink || 'N/A'}`,
     status: 'Open',
   };
 

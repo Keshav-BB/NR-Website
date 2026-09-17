@@ -92,8 +92,8 @@ export function Hero() {
           {/* Eyebrow / Brand Indicator */}
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary/10 border border-primary/20 mb-6 shadow-xs backdrop-blur-xs">
             <Sparkles className="w-3.5 h-3.5 text-accent" />
-            <span className="text-xs font-semibold text-primary tracking-wider uppercase">
-              Neuro Recode · Experiential Repatterning
+            <span className="text-xs font-bold text-primary tracking-widest uppercase">
+              NEURO RECODE
             </span>
           </div>
 

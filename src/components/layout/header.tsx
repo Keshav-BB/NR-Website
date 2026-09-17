@@ -11,11 +11,12 @@ import { trackEvent } from '@/lib/analytics/events';
 import { initializeAttribution } from '@/lib/analytics/attribution';
 
 const NAV_LINKS = [
-  { href: '/#how-it-works', label: 'How It Works' },
+  { href: '/how-it-works', label: 'How It Works' },
   { href: '/#what-is-neurorecode', label: 'Neuro Recode' },
   { href: '/#areas-we-help', label: 'Areas We Help' },
+  { href: '/stories', label: 'Stories' },
+  { href: '/careers', label: 'Careers' },
   { href: '/about', label: 'About' },
-  { href: '/#stories', label: 'Stories' },
   { href: '/#faq', label: 'FAQ' },
 ];
 

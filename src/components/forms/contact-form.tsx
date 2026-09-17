@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 import { LeadSubmissionSchema, type LeadSubmission } from '@/lib/validation/schemas';
 import { getStoredAttribution } from '@/lib/analytics/attribution';
 import { trackEvent } from '@/lib/analytics/events';
-import { Send, Loader2, AlertCircle, CheckCircle } from 'lucide-react';
+import { Send, Loader2, AlertCircle, CheckCircle, Clock, ShieldCheck } from 'lucide-react';
 import { siteConfig } from '@/lib/cms/site-config';
 
 export function ContactForm() {
@@ -25,6 +25,9 @@ export function ContactForm() {
     defaultValues: {
       preferredLanguage: 'Tanglish (Tamil + English)',
       enquiryType: 'Consultation (RCA Booking)',
+      patternArea: 'Anxiety & Nervous Tension',
+      sessionMode: 'Private Online Video Call',
+      preferredSlot: 'Evening (6:00 PM – 8:00 PM)',
       consent: true,
       honeypot: '',
     },
@@ -46,6 +49,7 @@ export function ContactForm() {
       trackEvent('contact_submitted', {
         enquiry_type: data.enquiryType,
         language: data.preferredLanguage,
+        pattern_area: data.patternArea,
       });
 
       const res = await fetch('/api/contact', {
@@ -74,15 +78,17 @@ export function ContactForm() {
 
   if (submitted) {
     return (
-      <div className="p-8 rounded-2xl bg-white border border-green-200 text-center space-y-4 shadow-sm">
-        <div className="w-14 h-14 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto">
+      <div className="p-8 sm:p-10 rounded-3xl bg-white border border-emerald-200 text-center space-y-4 shadow-elevated">
+        <div className="w-14 h-14 bg-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center mx-auto">
           <CheckCircle className="w-8 h-8" />
         </div>
-        <h3 className="text-xl font-bold text-primary-dark">Inquiry Submitted Successfully</h3>
-        <p className="text-sm text-content-secondary max-w-md mx-auto">
-          Thank you for reaching out to Neuro Recode. Our team has received your details and will
-          connect with you within one business day.
+        <h3 className="text-2xl font-bold font-display text-primary-dark">Consultation Request Received</h3>
+        <p className="text-sm sm:text-base text-content-secondary max-w-md mx-auto leading-relaxed">
+          Thank you for reaching out. Our client care desk will review your pattern details and contact you via WhatsApp / phone to confirm your private 1-on-1 slot.
         </p>
+        <div className="pt-2 text-xs text-content-secondary/80">
+          Redirecting to confirmation details...
+        </div>
       </div>
     );
   }
@@ -90,13 +96,24 @@ export function ContactForm() {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="space-y-6 bg-white p-6 sm:p-8 rounded-2xl border border-border shadow-sm"
+      className="space-y-6 bg-white p-6 sm:p-10 rounded-3xl border border-border/90 shadow-card"
       noValidate
     >
-      {/* Spam Honeypot Field (Hidden from real users) */}
+      <div>
+        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-accent/15 text-accent-muted text-xs font-bold uppercase tracking-wider mb-2">
+          <span>Confidential Discovery</span>
+        </div>
+        <h2 className="font-display text-2xl sm:text-3xl font-bold text-primary-dark">
+          Book Your 1-on-1 Consultation
+        </h2>
+        <p className="text-xs sm:text-sm text-content-secondary mt-1">
+          Explore the subconscious roots of your patterns in a private, 45–60 minute guided session.
+        </p>
+      </div>
+
+      {/* Spam trap */}
       <div className="hidden" aria-hidden="true">
-        <label htmlFor="hp_contact">Leave blank</label>
-        <input id="hp_contact" type="text" tabIndex={-1} autoComplete="off" {...register('honeypot')} />
+        <input type="text" tabIndex={-1} autoComplete="off" {...register('honeypot')} />
       </div>
 
       {serverError && (
@@ -106,28 +123,26 @@ export function ContactForm() {
         </div>
       )}
 
-      {/* Full Name & City */}
+      {/* 1. Candidate Info */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label htmlFor="fullName" className="block text-xs font-bold uppercase tracking-wider text-content-secondary mb-1.5">
+          <label htmlFor="fullName" className="block text-xs font-bold uppercase tracking-wider text-content-secondary mb-1">
             Full Name <span className="text-red-500">*</span>
           </label>
           <input
             id="fullName"
             type="text"
-            placeholder="e.g. Anand Sundaram"
+            placeholder="e.g. S. Ramakrishnan"
             {...register('fullName')}
-            className={`w-full px-4 py-3 rounded-xl border text-sm text-content-primary bg-background transition-colors focus:bg-white focus:outline-none focus:ring-2 focus:ring-primary ${
+            className={`w-full px-4 py-3 rounded-xl border text-sm text-content-primary bg-background focus:bg-white focus:outline-none focus:ring-2 focus:ring-primary ${
               errors.fullName ? 'border-red-400 bg-red-50/20' : 'border-border'
             }`}
           />
-          {errors.fullName && (
-            <p className="text-xs text-red-600 mt-1">{errors.fullName.message}</p>
-          )}
+          {errors.fullName && <p className="text-xs text-red-600 mt-1">{errors.fullName.message}</p>}
         </div>
 
         <div>
-          <label htmlFor="city" className="block text-xs font-bold uppercase tracking-wider text-content-secondary mb-1.5">
+          <label htmlFor="city" className="block text-xs font-bold uppercase tracking-wider text-content-secondary mb-1">
             City / Location <span className="text-red-500">*</span>
           </label>
           <input
@@ -135,73 +150,72 @@ export function ContactForm() {
             type="text"
             placeholder="e.g. Chennai, Bangalore, Hyderabad"
             {...register('city')}
-            className={`w-full px-4 py-3 rounded-xl border text-sm text-content-primary bg-background transition-colors focus:bg-white focus:outline-none focus:ring-2 focus:ring-primary ${
+            className={`w-full px-4 py-3 rounded-xl border text-sm text-content-primary bg-background focus:bg-white focus:outline-none focus:ring-2 focus:ring-primary ${
               errors.city ? 'border-red-400 bg-red-50/20' : 'border-border'
             }`}
           />
-          {errors.city && (
-            <p className="text-xs text-red-600 mt-1">{errors.city.message}</p>
-          )}
+          {errors.city && <p className="text-xs text-red-600 mt-1">{errors.city.message}</p>}
         </div>
       </div>
 
-      {/* Mobile Number & WhatsApp */}
+      {/* 2. Contact Details */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label htmlFor="mobile" className="block text-xs font-bold uppercase tracking-wider text-content-secondary mb-1.5">
-            Mobile Number <span className="text-red-500">*</span>
+          <label htmlFor="mobile" className="block text-xs font-bold uppercase tracking-wider text-content-secondary mb-1">
+            Mobile Number (WhatsApp) <span className="text-red-500">*</span>
           </label>
           <input
             id="mobile"
             type="tel"
             placeholder="10-digit mobile number"
             {...register('mobile')}
-            className={`w-full px-4 py-3 rounded-xl border text-sm text-content-primary bg-background transition-colors focus:bg-white focus:outline-none focus:ring-2 focus:ring-primary ${
+            className={`w-full px-4 py-3 rounded-xl border text-sm text-content-primary bg-background focus:bg-white focus:outline-none focus:ring-2 focus:ring-primary ${
               errors.mobile ? 'border-red-400 bg-red-50/20' : 'border-border'
             }`}
           />
-          {errors.mobile && (
-            <p className="text-xs text-red-600 mt-1">{errors.mobile.message}</p>
-          )}
+          {errors.mobile && <p className="text-xs text-red-600 mt-1">{errors.mobile.message}</p>}
         </div>
 
         <div>
-          <label htmlFor="whatsapp" className="block text-xs font-bold uppercase tracking-wider text-content-secondary mb-1.5">
-            WhatsApp Number (if different)
+          <label htmlFor="email" className="block text-xs font-bold uppercase tracking-wider text-content-secondary mb-1">
+            Email Address <span className="text-red-500">*</span>
           </label>
           <input
-            id="whatsapp"
-            type="tel"
-            placeholder="WhatsApp number"
-            {...register('whatsapp')}
-            className="w-full px-4 py-3 rounded-xl border border-border text-sm text-content-primary bg-background transition-colors focus:bg-white focus:outline-none focus:ring-2 focus:ring-primary"
+            id="email"
+            type="email"
+            placeholder="your.email@company.com"
+            {...register('email')}
+            className={`w-full px-4 py-3 rounded-xl border text-sm text-content-primary bg-background focus:bg-white focus:outline-none focus:ring-2 focus:ring-primary ${
+              errors.email ? 'border-red-400 bg-red-50/20' : 'border-border'
+            }`}
           />
+          {errors.email && <p className="text-xs text-red-600 mt-1">{errors.email.message}</p>}
         </div>
       </div>
 
-      {/* Email Address */}
-      <div>
-        <label htmlFor="email" className="block text-xs font-bold uppercase tracking-wider text-content-secondary mb-1.5">
-          Email Address <span className="text-red-500">*</span>
-        </label>
-        <input
-          id="email"
-          type="email"
-          placeholder="your.name@company.com"
-          {...register('email')}
-          className={`w-full px-4 py-3 rounded-xl border text-sm text-content-primary bg-background transition-colors focus:bg-white focus:outline-none focus:ring-2 focus:ring-primary ${
-            errors.email ? 'border-red-400 bg-red-50/20' : 'border-border'
-          }`}
-        />
-        {errors.email && (
-          <p className="text-xs text-red-600 mt-1">{errors.email.message}</p>
-        )}
-      </div>
-
-      {/* Language & Enquiry Type */}
+      {/* 3. Reason for Reaching Out / Primary Pattern */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label htmlFor="preferredLanguage" className="block text-xs font-bold uppercase tracking-wider text-content-secondary mb-1.5">
+          <label htmlFor="patternArea" className="block text-xs font-bold uppercase tracking-wider text-content-secondary mb-1">
+            Primary Pattern to Explore <span className="text-red-500">*</span>
+          </label>
+          <select
+            id="patternArea"
+            {...register('patternArea')}
+            className="w-full px-4 py-3 rounded-xl border border-border text-sm text-content-primary bg-background focus:bg-white focus:outline-none focus:ring-2 focus:ring-primary"
+          >
+            <option value="Anxiety & Nervous Tension">Anxiety &amp; Nervous Tension</option>
+            <option value="Fear & Phobias">Fear &amp; Phobias (Stage/Public)</option>
+            <option value="Nocturnal Overthinking & Sleep">Nocturnal Overthinking &amp; Sleep</option>
+            <option value="Self-Doubt & Imposter Syndrome">Self-Doubt &amp; Imposter Syndrome</option>
+            <option value="Visceral Emotional Triggers">Visceral Emotional Triggers</option>
+            <option value="Recurring Life / Work Patterns">Recurring Life / Work Patterns</option>
+            <option value="General Program Inquiry">General Program Inquiry</option>
+          </select>
+        </div>
+
+        <div>
+          <label htmlFor="preferredLanguage" className="block text-xs font-bold uppercase tracking-wider text-content-secondary mb-1">
             Preferred Language <span className="text-red-500">*</span>
           </label>
           <select
@@ -214,80 +228,101 @@ export function ContactForm() {
             <option value="Tamil">Tamil</option>
           </select>
         </div>
+      </div>
 
+      {/* 4. Slot Preference & Mode */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label htmlFor="enquiryType" className="block text-xs font-bold uppercase tracking-wider text-content-secondary mb-1.5">
-            Enquiry Type <span className="text-red-500">*</span>
+          <label htmlFor="preferredSlot" className="block text-xs font-bold uppercase tracking-wider text-content-secondary mb-1">
+            Preferred Time Window
           </label>
           <select
-            id="enquiryType"
-            {...register('enquiryType')}
+            id="preferredSlot"
+            {...register('preferredSlot')}
             className="w-full px-4 py-3 rounded-xl border border-border text-sm text-content-primary bg-background focus:bg-white focus:outline-none focus:ring-2 focus:ring-primary"
           >
-            <option value="Program Enquiry">Program Enquiry</option>
-            <option value="Consultation (RCA Booking)">Consultation (RCA Booking)</option>
-            <option value="General Support">General Support</option>
-            <option value="Billing / Refund Question">Billing / Refund Question</option>
-            <option value="Careers / Recruitment">Careers / Recruitment</option>
+            <option value="Evening (6:00 PM – 8:00 PM)">Evening (6:00 PM – 8:00 PM)</option>
+            <option value="Morning (10:00 AM – 1:00 PM)">Morning (10:00 AM – 1:00 PM)</option>
+            <option value="Afternoon (2:00 PM – 5:00 PM)">Afternoon (2:00 PM – 5:00 PM)</option>
+            <option value="Weekend Slot Preference">Weekend Slot Preference</option>
+          </select>
+        </div>
+
+        <div>
+          <label htmlFor="sessionMode" className="block text-xs font-bold uppercase tracking-wider text-content-secondary mb-1">
+            Session Format
+          </label>
+          <select
+            id="sessionMode"
+            {...register('sessionMode')}
+            className="w-full px-4 py-3 rounded-xl border border-border text-sm text-content-primary bg-background focus:bg-white focus:outline-none focus:ring-2 focus:ring-primary"
+          >
+            <option value="Private Online Video Call">Private Online Video Call (Google Meet)</option>
+            <option value="Chennai In-Person Hybrid">Chennai In-Person / Hybrid</option>
           </select>
         </div>
       </div>
 
-      {/* Message / Context */}
+      {/* 5. Message or Context */}
       <div>
-        <label htmlFor="message" className="block text-xs font-bold uppercase tracking-wider text-content-secondary mb-1.5">
-          How can our team help you? (Optional)
+        <label htmlFor="message" className="block text-xs font-bold uppercase tracking-wider text-content-secondary mb-1">
+          Brief Context / Notes (Optional)
         </label>
         <textarea
           id="message"
-          rows={4}
-          placeholder="Briefly share what you are experiencing or any specific questions..."
+          rows={3}
+          placeholder="Briefly describe what you would like to shift or any questions you have..."
           {...register('message')}
-          className="w-full px-4 py-3 rounded-xl border border-border text-sm text-content-primary bg-background focus:bg-white focus:outline-none focus:ring-2 focus:ring-primary leading-relaxed"
+          className="w-full px-4 py-3 rounded-xl border border-border text-sm text-content-primary bg-background focus:bg-white focus:outline-none focus:ring-2 focus:ring-primary resize-y"
         />
       </div>
 
-      {/* Consent Checkbox with Disclaimer Notice */}
-      <div className="pt-2">
-        <label className="flex items-start gap-3 cursor-pointer select-none">
+      {/* Consent Checkbox */}
+      <div>
+        <label className="flex items-start gap-3 cursor-pointer">
           <input
             type="checkbox"
             {...register('consent')}
-            className="w-4 h-4 mt-1 rounded border-border text-primary focus:ring-primary"
+            className="mt-1 w-4 h-4 rounded border-border text-primary focus:ring-primary"
           />
           <span className="text-xs text-content-secondary leading-relaxed">
-            I understand that Neuro Recode provides non-clinical educational and wellness mindset
-            services, not medical or psychiatric diagnosis/treatment. If in active crisis, I will
-            call Tele-MANAS (14416) or 112. <span className="text-red-500">*</span>
+            I understand that Neuro Recode is an experiential personal-development and mental-wellness framework and does not constitute psychiatric diagnosis, medical treatment, or crisis intervention. <span className="text-red-500">*</span>
           </span>
         </label>
-        {errors.consent && (
-          <p className="text-xs text-red-600 mt-1 pl-7">{errors.consent.message}</p>
-        )}
+        {errors.consent && <p className="text-xs text-red-600 mt-1">{errors.consent.message}</p>}
       </div>
 
-      {/* Submit Button */}
+      {/* Submit CTA */}
       <button
         type="submit"
         disabled={isSubmitting}
-        className="w-full flex items-center justify-center gap-2 py-4 px-6 rounded-xl bg-primary text-accent font-semibold text-base hover:bg-primary-hover shadow-subtle hover:shadow-card transition-all disabled:opacity-50"
+        className="w-full py-4 px-6 rounded-xl bg-primary text-white font-bold text-base hover:bg-primary-hover transition-all duration-200 shadow-card flex items-center justify-center gap-2.5 disabled:opacity-60 disabled:cursor-not-allowed active:scale-[0.99]"
       >
         {isSubmitting ? (
           <>
-            <Loader2 className="w-5 h-5 animate-spin" />
-            <span>Sending Inquiry securely...</span>
+            <Loader2 className="w-5 h-5 animate-spin text-accent" />
+            <span>Reserving Consultation Slot...</span>
           </>
         ) : (
           <>
-            <Send className="w-4 h-4" />
-            <span>Submit Inquiry</span>
+            <span>Confirm Consultation Request</span>
+            <Send className="w-4 h-4 text-accent" />
           </>
         )}
       </button>
 
-      <p className="text-center text-[11px] text-content-muted">
-        Your information is securely encrypted and routed directly to our confidential intake desk.
-      </p>
+      {/* Trust Badges Row */}
+      <div className="pt-2 flex flex-wrap items-center justify-center gap-4 text-xs text-content-secondary">
+        <span className="flex items-center gap-1.5">
+          <ShieldCheck className="w-4 h-4 text-accent" />
+          <span>100% Confidential &amp; Non-Judgmental</span>
+        </span>
+        <span>•</span>
+        <span className="flex items-center gap-1.5">
+          <Clock className="w-4 h-4 text-accent" />
+          <span>Nominal ₹{siteConfig.feesAndPolicies.consultationBookingFee} reservation fee applies upon slot confirmation</span>
+        </span>
+      </div>
     </form>
   );
 }
